@@ -2,8 +2,9 @@ import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
 import mongoose from "mongoose"
-import serviceRoutes from "./routes/service.routes.js"
-import userRoutes from "./routes/User.routes.js"
+import serviceRoutes from "./routes/Service.routes.js"
+import userRoutes from "./routes/user.routes.js"
+import bookingRoutes from "./routes/Booking.routes.js"
 
 dotenv.config()
 
@@ -20,9 +21,9 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.log("❌ MongoDB Error:", err))
 
-// ── Routes ────────────────────────────────────────────────
 app.use("/services", serviceRoutes)
 app.use("/users", userRoutes)
+app.use("/bookings", bookingRoutes)
 
 app.get("/", (req, res) => {
   res.send("StyleDecor Server is running!")
