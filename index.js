@@ -2,9 +2,9 @@ import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
 import mongoose from "mongoose"
-import serviceRoutes from "./routes/Service.routes.js"
+import serviceRoutes from "./routes/service.routes.js"
 import userRoutes from "./routes/user.routes.js"
-import bookingRoutes from "./routes/Booking.routes.js"
+import bookingRoutes from "./routes/booking.routes.js"
 
 dotenv.config()
 
