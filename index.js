@@ -6,6 +6,7 @@ import serviceRoutes from "./routes/service.routes.js"
 import userRoutes from "./routes/user.routes.js"
 import bookingRoutes from "./routes/booking.routes.js"
 import authRoutes from "./routes/auth.routes.js"
+import paymentRoutes from "./routes/payment.routes.js"
 
 dotenv.config()
 
@@ -26,6 +27,7 @@ app.use("/services", serviceRoutes)
 app.use("/users", userRoutes)
 app.use("/bookings", bookingRoutes)
 app.use("/auth", authRoutes)
+app.use("/payments", paymentRoutes)
 
 app.get("/", (req, res) => {
   res.send("StyleDecor Server is running!")
