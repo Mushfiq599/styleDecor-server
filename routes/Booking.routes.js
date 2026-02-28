@@ -1,10 +1,12 @@
 import express from "express"
 import Booking from "../models/Booking.model.js"
+import verifyToken from "../middleware/verifyToken.js"
 
 const router = express.Router()
 
-// ── GET all bookings (admin) ──────────────────────────────
-router.get("/", async (req, res) => {
+// ── PRIVATE: Get all bookings (admin) ─────────────────────
+// GET /bookings
+router.get("/", verifyToken, async (req, res) => {
   try {
     const bookings = await Booking.find().sort({ createdAt: -1 })
     res.json(bookings)
@@ -13,9 +15,14 @@ router.get("/", async (req, res) => {
   }
 })
 
-// ── GET bookings by user email ────────────────────────────
-router.get("/user/:email", async (req, res) => {
+// ── PRIVATE: Get bookings by user email ───────────────────
+// GET /bookings/user/:email
+router.get("/user/:email", verifyToken, async (req, res) => {
   try {
+    // Make sure logged in user can only see their own bookings
+    if (req.user.email !== req.params.email) {
+      return res.status(403).json({ message: "Forbidden! Access denied." })
+    }
     const bookings = await Booking.find({
       userEmail: req.params.email,
     }).sort({ createdAt: -1 })
@@ -25,8 +32,9 @@ router.get("/user/:email", async (req, res) => {
   }
 })
 
-// ── GET single booking by ID ──────────────────────────────
-router.get("/:id", async (req, res) => {
+// ── PRIVATE: Get single booking by ID ────────────────────
+// GET /bookings/:id
+router.get("/:id", verifyToken, async (req, res) => {
   try {
     const booking = await Booking.findById(req.params.id)
     if (!booking) {
@@ -38,8 +46,9 @@ router.get("/:id", async (req, res) => {
   }
 })
 
-// ── POST create booking ───────────────────────────────────
-router.post("/", async (req, res) => {
+// ── PRIVATE: Create booking ───────────────────────────────
+// POST /bookings
+router.post("/", verifyToken, async (req, res) => {
   try {
     const newBooking = new Booking(req.body)
     const saved = await newBooking.save()
@@ -49,8 +58,9 @@ router.post("/", async (req, res) => {
   }
 })
 
-// ── PATCH cancel booking ──────────────────────────────────
-router.patch("/cancel/:id", async (req, res) => {
+// ── PRIVATE: Cancel booking ───────────────────────────────
+// PATCH /bookings/cancel/:id
+router.patch("/cancel/:id", verifyToken, async (req, res) => {
   try {
     const booking = await Booking.findById(req.params.id)
     if (!booking) {
@@ -69,8 +79,9 @@ router.patch("/cancel/:id", async (req, res) => {
   }
 })
 
-// ── PATCH update booking status (decorator) ───────────────
-router.patch("/status/:id", async (req, res) => {
+// ── PRIVATE: Update booking status (decorator) ───────────
+// PATCH /bookings/status/:id
+router.patch("/status/:id", verifyToken, async (req, res) => {
   try {
     const { status } = req.body
     const updated = await Booking.findByIdAndUpdate(
@@ -87,8 +98,9 @@ router.patch("/status/:id", async (req, res) => {
   }
 })
 
-// ── PATCH assign decorator (admin) ───────────────────────
-router.patch("/assign/:id", async (req, res) => {
+// ── PRIVATE: Assign decorator (admin) ────────────────────
+// PATCH /bookings/assign/:id
+router.patch("/assign/:id", verifyToken, async (req, res) => {
   try {
     const { assignedDecorator } = req.body
     const updated = await Booking.findByIdAndUpdate(
@@ -105,8 +117,9 @@ router.patch("/assign/:id", async (req, res) => {
   }
 })
 
-// ── PATCH update payment status ───────────────────────────
-router.patch("/payment/:id", async (req, res) => {
+// ── PRIVATE: Update payment status ───────────────────────
+// PATCH /bookings/payment/:id
+router.patch("/payment/:id", verifyToken, async (req, res) => {
   try {
     const { paymentStatus, transactionId } = req.body
     const updated = await Booking.findByIdAndUpdate(
@@ -123,8 +136,9 @@ router.patch("/payment/:id", async (req, res) => {
   }
 })
 
-// ── DELETE booking ────────────────────────────────────────
-router.delete("/:id", async (req, res) => {
+// ── PRIVATE: Delete booking ───────────────────────────────
+// DELETE /bookings/:id
+router.delete("/:id", verifyToken, async (req, res) => {
   try {
     const deleted = await Booking.findByIdAndDelete(req.params.id)
     if (!deleted) {

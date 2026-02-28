@@ -1,32 +1,27 @@
 import express from "express"
 import User from "../models/User.model.js"
+import verifyToken from "../middleware/verifyToken.js"
 
 const router = express.Router()
 
-// ── Save user to DB after Firebase register/login ─────────
+// ── PUBLIC: Save user to DB after Firebase register/login ─
 // POST /users
 router.post("/", async (req, res) => {
     try {
         const { email, name, photo } = req.body
-
-        // Check if user already exists
         const existingUser = await User.findOne({ email })
         if (existingUser) {
-            // User exists → just return their data (for social login)
             return res.json(existingUser)
         }
-
-        // New user → save to database
         const newUser = new User({ email, name, photo })
         const saved = await newUser.save()
         res.status(201).json(saved)
-
     } catch (error) {
         res.status(500).json({ message: "Error saving user", error: error.message })
     }
 })
 
-// ── Get user role by email ────────────────────────────────
+// ── PUBLIC: Get user role by email ────────────────────────
 // GET /users/role/:email
 router.get("/role/:email", async (req, res) => {
     try {
@@ -40,9 +35,9 @@ router.get("/role/:email", async (req, res) => {
     }
 })
 
-// ── Get all users (admin only — auth added later) ─────────
+// ── PRIVATE: Get all users (admin only) ───────────────────
 // GET /users
-router.get("/", async (req, res) => {
+router.get("/", verifyToken, async (req, res) => {
     try {
         const users = await User.find().sort({ createdAt: -1 })
         res.json(users)
@@ -51,9 +46,9 @@ router.get("/", async (req, res) => {
     }
 })
 
-// ── Update user role ──────────────────────────────────────
+// ── PRIVATE: Update user role ─────────────────────────────
 // PATCH /users/role/:email
-router.patch("/role/:email", async (req, res) => {
+router.patch("/role/:email", verifyToken, async (req, res) => {
     try {
         const { role } = req.body
         const updated = await User.findOneAndUpdate(
