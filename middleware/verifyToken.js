@@ -27,15 +27,15 @@ const verifyToken = (req, res, next) => {
 }
 
 export default verifyToken
-    ```
+//     ```
 
-**What's happening here?**
+// **What's happening here?**
 
-Every protected API call will pass through this function first. Think of it like a security guard at a door:
-- No token → 401 Unauthorized (you can't even enter)
-- Wrong/expired token → 403 Forbidden (wrong key)
-- Valid token → `next()` → allowed through ✅
+// Every protected API call will pass through this function first. Think of it like a security guard at a door:
+// - No token → 401 Unauthorized (you can't even enter)
+// - Wrong/expired token → 403 Forbidden (wrong key)
+// - Valid token → `next()` → allowed through ✅
 
-The token comes in the request header like:
-```
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+// The token comes in the request header like:
+// ```
+// Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...

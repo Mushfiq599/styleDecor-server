@@ -5,6 +5,7 @@ import mongoose from "mongoose"
 import serviceRoutes from "./routes/service.routes.js"
 import userRoutes from "./routes/user.routes.js"
 import bookingRoutes from "./routes/booking.routes.js"
+import authRoutes from "./routes/auth.routes.js"
 
 dotenv.config()
 
@@ -24,6 +25,7 @@ mongoose.connect(process.env.MONGODB_URI)
 app.use("/services", serviceRoutes)
 app.use("/users", userRoutes)
 app.use("/bookings", bookingRoutes)
+app.use("/auth", authRoutes)
 
 app.get("/", (req, res) => {
   res.send("StyleDecor Server is running!")
