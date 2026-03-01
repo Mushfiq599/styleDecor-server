@@ -21,6 +21,16 @@ router.post("/", async (req, res) => {
     }
 })
 
+// GET all decorators
+router.get("/decorators", async (req, res) => {
+    try {
+        const decorators = await User.find({ role: "decorator" })
+        res.json(decorators)
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message })
+    }
+})
+
 // ── PUBLIC: Get user role by email ────────────────────────
 // GET /users/role/:email
 router.get("/role/:email", async (req, res) => {
@@ -61,5 +71,7 @@ router.patch("/role/:email", verifyToken, async (req, res) => {
         res.status(500).json({ message: "Error updating role", error: error.message })
     }
 })
+
+
 
 export default router
