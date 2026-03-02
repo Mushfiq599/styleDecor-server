@@ -82,19 +82,14 @@ const seedServices = [
 const seedDB = async () => {
     try {
         await mongoose.connect(process.env.MONGODB_URI)
-        console.log("✅ Connected to MongoDB")
-
-        // Clear existing services
+        console.log(" Connected to MongoDB")
         await Service.deleteMany({})
-        console.log("🗑️  Cleared existing services")
-
-        // Insert new services
+        console.log("  Cleared existing services")
         await Service.insertMany(seedServices)
-        console.log("🌱 Seeded 8 services successfully!")
-
+        console.log(" Seeded 8 services successfully!")
         process.exit(0)
     } catch (error) {
-        console.error("❌ Seeding failed:", error)
+        console.error(" Seeding failed:", error)
         process.exit(1)
     }
 }

@@ -4,8 +4,6 @@ import verifyToken from "../middleware/verifyToken.js"
 
 const router = express.Router()
 
-// ── PUBLIC: GET all services ──────────────────────────────
-// GET /services
 router.get("/", async (req, res) => {
     try {
         const { search, category, minCost, maxCost } = req.query
@@ -30,8 +28,6 @@ router.get("/", async (req, res) => {
     }
 })
 
-// ── PUBLIC: GET single service by ID ─────────────────────
-// GET /services/:id
 router.get("/:id", async (req, res) => {
     try {
         const service = await Service.findById(req.params.id)
@@ -43,9 +39,6 @@ router.get("/:id", async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message })
     }
 })
-
-// ── PRIVATE: POST create new service (admin only) ────────
-// POST /services
 router.post("/", verifyToken, async (req, res) => {
     try {
         const newService = new Service(req.body)
@@ -56,8 +49,6 @@ router.post("/", verifyToken, async (req, res) => {
     }
 })
 
-// ── PRIVATE: PUT update service (admin only) ─────────────
-// PUT /services/:id
 router.put("/:id", verifyToken, async (req, res) => {
     try {
         const updated = await Service.findByIdAndUpdate(
@@ -74,8 +65,6 @@ router.put("/:id", verifyToken, async (req, res) => {
     }
 })
 
-// ── PRIVATE: DELETE service (admin only) ─────────────────
-// DELETE /services/:id
 router.delete("/:id", verifyToken, async (req, res) => {
     try {
         const deleted = await Service.findByIdAndDelete(req.params.id)

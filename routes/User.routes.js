@@ -4,8 +4,6 @@ import verifyToken from "../middleware/verifyToken.js"
 
 const router = express.Router()
 
-// ── PUBLIC: Save user to DB after Firebase register/login ─
-// POST /users
 router.post("/", async (req, res) => {
     try {
         const { email, name, photo } = req.body
@@ -21,7 +19,6 @@ router.post("/", async (req, res) => {
     }
 })
 
-// GET all decorators
 router.get("/decorators", async (req, res) => {
     try {
         const decorators = await User.find({ role: "decorator" })
@@ -31,8 +28,6 @@ router.get("/decorators", async (req, res) => {
     }
 })
 
-// ── PUBLIC: Get user role by email ────────────────────────
-// GET /users/role/:email
 router.get("/role/:email", async (req, res) => {
     try {
         const user = await User.findOne({ email: req.params.email })
@@ -45,8 +40,6 @@ router.get("/role/:email", async (req, res) => {
     }
 })
 
-// ── PRIVATE: Get all users (admin only) ───────────────────
-// GET /users
 router.get("/", verifyToken, async (req, res) => {
     try {
         const users = await User.find().sort({ createdAt: -1 })
@@ -56,8 +49,6 @@ router.get("/", verifyToken, async (req, res) => {
     }
 })
 
-// ── PRIVATE: Update user role ─────────────────────────────
-// PATCH /users/role/:email
 router.patch("/role/:email", verifyToken, async (req, res) => {
     try {
         const { role } = req.body
@@ -71,7 +62,5 @@ router.patch("/role/:email", verifyToken, async (req, res) => {
         res.status(500).json({ message: "Error updating role", error: error.message })
     }
 })
-
-
 
 export default router
