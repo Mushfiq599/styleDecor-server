@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 5000
 
 app.use(cors({
   origin: ["http://localhost:5173",
-  "https://styledecor-server-jm4k.onrender.com"],
+  "https://style-decor-client-five.vercel.app"],
   credentials: true,
 }))
 app.use(express.json())
