@@ -1,45 +1,66 @@
-import express from "express"
-import cors from "cors"
-import dotenv from "dotenv"
-import mongoose from "mongoose"
-import serviceRoutes from "./routes/service.routes.js"
-import userRoutes from "./routes/user.routes.js"
-import bookingRoutes from "./routes/booking.routes.js"
-import authRoutes from "./routes/auth.routes.js"
-import paymentRoutes from "./routes/payment.routes.js"
+const express       = require("express")
+const mongoose      = require("mongoose")
+const cors          = require("cors")
+const dotenv        = require("dotenv")
 
 dotenv.config()
 
 const app = express()
-const PORT = process.env.PORT || 5000
 
+// ── Middleware ────────────────────────────────────────────────
 app.use(cors({
-  origin: ["http://localhost:5173", "https://style-decor-client-five.vercel.app"],
+  origin: [
+    process.env.CLIENT_URL || "http://localhost:5173",
+    "https://style-decor-client-five.vercel.app",
+  ],
   credentials: true,
 }))
 app.use(express.json())
 
-app.use("/services", serviceRoutes)
-app.use("/users", userRoutes)
-app.use("/bookings", bookingRoutes)
-app.use("/auth", authRoutes)
-app.use("/payments", paymentRoutes)
+// ── Routes ────────────────────────────────────────────────────
+const userRoutes       = require("./routes/user.routes")
+const serviceRoutes    = require("./routes/service.routes")
+const bookingRoutes    = require("./routes/booking.routes")
+const statsRoutes      = require("./routes/stats.routes")
+const contactRoutes    = require("./routes/contact.routes")
 
+app.use("/users",    userRoutes)
+app.use("/services", serviceRoutes)
+app.use("/bookings", bookingRoutes)
+app.use("/stats",    statsRoutes)
+app.use("/contact",  contactRoutes)
+
+// ── Health check ──────────────────────────────────────────────
 app.get("/", (req, res) => {
-  res.send("StyleDecor Server is running!")
+  res.json({ status: "StyleDecor API is running 🎨" })
 })
 
-const startServer = async () => {
-  try {
-    await mongoose.connect(process.env.MONGODB_URI)
-    console.log(" MongoDB Connected")
-    app.listen(PORT, () => {
-      console.log(` Server running on port ${PORT}`)
-    })
-  } catch (err) {
-    console.error(" MongoDB connection failed:", err.message)
-    process.exit(1)
-  }
-}
+// ── Centralized error handler ─────────────────────────────────
+app.use((err, req, res, next) => {
+  const status = err.status || 500
+  res.status(status).json({
+    message: err.message || "Internal server error",
+    ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
+  })
+})
 
-startServer()
+// ── 404 handler ───────────────────────────────────────────────
+app.use((req, res) => {
+  res.status(404).json({ message: "Route not found" })
+})
+
+// ── DB + Server ───────────────────────────────────────────────
+const PORT = process.env.PORT || 5000
+
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log("✅ Connected to MongoDB")
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`)
+    })
+  })
+  .catch((err) => {
+    console.error("❌ MongoDB connection failed:", err.message)
+    process.exit(1)
+  })

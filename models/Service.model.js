@@ -18,7 +18,7 @@ const serviceSchema = new mongoose.Schema(
         service_category: {
             type: String,
             required: true,
-            enum: ["home", "wedding", "office", "seminar", "meeting", "birthday"],
+            enum: ["home", "wedding", "office", "seminar", "meeting", "birthday", "festival", "exhibition"],
         },
         description: {
             type: String,
