@@ -1,7 +1,12 @@
-const express       = require("express")
-const mongoose      = require("mongoose")
-const cors          = require("cors")
-const dotenv        = require("dotenv")
+import express from "express"
+import mongoose from "mongoose"
+import cors from "cors"
+import dotenv from "dotenv"
+import userRoutes from "./routes/user.routes.js"
+import serviceRoutes from "./routes/service.routes.js"
+import bookingRoutes from "./routes/booking.routes.js"
+import statsRoutes from "./routes/stats.routes.js"
+import contactRoutes from "./routes/contact.routes.js"
 
 dotenv.config()
 
@@ -18,17 +23,11 @@ app.use(cors({
 app.use(express.json())
 
 // ── Routes ────────────────────────────────────────────────────
-const userRoutes       = require("./routes/user.routes")
-const serviceRoutes    = require("./routes/service.routes")
-const bookingRoutes    = require("./routes/booking.routes")
-const statsRoutes      = require("./routes/stats.routes")
-const contactRoutes    = require("./routes/contact.routes")
-
-app.use("/users",    userRoutes)
+app.use("/users", userRoutes)
 app.use("/services", serviceRoutes)
 app.use("/bookings", bookingRoutes)
-app.use("/stats",    statsRoutes)
-app.use("/contact",  contactRoutes)
+app.use("/stats", statsRoutes)
+app.use("/contact", contactRoutes)
 
 // ── Health check ──────────────────────────────────────────────
 app.get("/", (req, res) => {

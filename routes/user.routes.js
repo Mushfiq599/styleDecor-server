@@ -1,8 +1,15 @@
-const express    = require("express")
-const router     = express.Router()
-const User       = require("../models/User.model")
-const verifyToken = require("../middleware/verifyToken")
-const isAdmin    = require("../middleware/isAdmin")
+import express from "express"
+import User from "../models/User.model.js"
+import verifyToken from "../middleware/verifyToken.js"
+
+const router = express.Router()
+
+const isAdmin = (req, res, next) => {
+  if (req.user?.role !== "admin") {
+    return res.status(403).json({ message: "Forbidden: admin only" })
+  }
+  next()
+}
 
 // POST /users — create or update user (called on login/register)
 router.post("/", async (req, res) => {
@@ -62,4 +69,4 @@ router.patch("/role/:email", verifyToken, isAdmin, async (req, res) => {
   }
 })
 
-module.exports = router
+export default router

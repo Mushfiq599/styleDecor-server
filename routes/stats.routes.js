@@ -1,8 +1,9 @@
-const express  = require("express")
-const router   = express.Router()
-const User     = require("../models/User.model")
-const Booking  = require("../models/Booking.model")
-const Service  = require("../models/Service.model")
+import express from "express"
+import User from "../models/User.model.js"
+import Booking from "../models/Booking.model.js"
+import Service from "../models/Service.model.js"
+
+const router = express.Router()
 
 // GET /stats  — public, no auth required
 router.get("/", async (req, res) => {
@@ -24,4 +25,4 @@ router.get("/", async (req, res) => {
   }
 })
 
-module.exports = router
+export default router

@@ -1,6 +1,7 @@
-const express = require("express")
-const router  = express.Router()
-const Contact = require("../models/Contact.model")
+import express from "express"
+import Contact from "../models/Contact.model.js"
+
+const router = express.Router()
 
 // POST /contact  — public, saves message to DB
 router.post("/", async (req, res) => {
@@ -39,4 +40,4 @@ router.get("/", async (req, res) => {
   }
 })
 
-module.exports = router
+export default router
