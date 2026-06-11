@@ -75,7 +75,7 @@ const seedServices = [
         unit: "per event",
         service_category: "wedding",
         description: "Colorful mehndi/haldi setups with traditional backdrops and seating.",
-        image: "https://images.unsplash.com/photo-1519744792095-2f2205e87b6f?w=500&q=80",
+        image: "https://images.unsplash.com/photo-1602576666092-bf6447a729fc?w=500&q=80",
         createdByEmail: "admin@styledecor.com",
     },
     {
@@ -149,7 +149,7 @@ const seedServices = [
         unit: "per area",
         service_category: "office",
         description: "Elegant office reception and entrance decoration for strong first impressions.",
-        image: "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=500&q=80",
+        image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=500&q=80",
         createdByEmail: "admin@styledecor.com",
     },
     {
@@ -158,7 +158,7 @@ const seedServices = [
         unit: "per floor",
         service_category: "office",
         description: "Modern coworking décor with zones for focus, collaboration and relaxation.",
-        image: "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=500&q=80",
+        image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=500&q=80",
         createdByEmail: "admin@styledecor.com",
     },
     {
@@ -233,7 +233,7 @@ const seedServices = [
         unit: "per room", 
         service_category: "home", 
         description: "Transform your living spaces with our expert interior decoration services tailored to your personal style and budget.", 
-        image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=500&q=80", 
+        image: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=500&q=80", 
         createdByEmail: "admin@styledecor.com",
      },
       {
