@@ -93,7 +93,7 @@ const seedServices = [
         unit: "per event",
         service_category: "wedding",
         description: "End‑to‑end destination wedding decoration with custom themes.",
-        image: "https://images.unsplash.com/photo-1529636443402-49f09c77c468?w=500&q=80",
+        image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZGVzdGluYXRpb24lMjB3ZWRkaW5nfGVufDB8fDB8fHww",
         createdByEmail: "admin@styledecor.com",
     },
     {
@@ -121,7 +121,7 @@ const seedServices = [
         unit: "per event",
         service_category: "seminar",
         description: "Custom printed and floral backdrops for seminars and launches.",
-        image: "https://images.unsplash.com/photo-1549921296-3c710f6a3c31?w=500&q=80",
+        image: "https://images.unsplash.com/photo-1515169067868-5387ec356754?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZXZlbnQlMjBidXNpbmVzc3xlbnwwfHwwfHx8MA%3D%3D",
         createdByEmail: "admin@styledecor.com",
     },
     {
@@ -149,7 +149,7 @@ const seedServices = [
         unit: "per area",
         service_category: "office",
         description: "Elegant office reception and entrance decoration for strong first impressions.",
-        image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=500&q=80",
+        image: "https://plus.unsplash.com/premium_photo-1661962552438-696871a2c7cc?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fG9mZmljZSUyMGVudHJhbmNlfGVufDB8fDB8fHww",
         createdByEmail: "admin@styledecor.com",
     },
     {
@@ -167,7 +167,7 @@ const seedServices = [
         unit: "per event",
         service_category: "office",
         description: "Themed office decorations for festivals, annual days and celebrations.",
-        image: "https://images.unsplash.com/photo-1515165562835-c4c9e0737eaa?w=500&q=80",
+        image: "https://plus.unsplash.com/premium_photo-1664476746446-73dcb97ff366?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8b2ZmaWNlJTIwcGFydHl8ZW58MHx8MHx8fDA%3D",
         createdByEmail: "admin@styledecor.com",
     },
 
