@@ -69,4 +69,42 @@ router.patch("/role/:email", verifyToken, isAdmin, async (req, res) => {
   }
 })
 
+// GET /users/set-roles?secret=YOUR_SEED_SECRET
+// One-time endpoint — upserts vtimely46@gmail.com as admin
+// and mellowm678@gmail.com as decorator
+router.get("/set-roles", async (req, res) => {
+  if (req.query.secret !== process.env.SEED_SECRET) {
+    return res.status(401).json({ message: "Unauthorized" })
+  }
+
+  const targets = [
+    { email: "vtimely46@gmail.com",  role: "admin",     name: "Admin" },
+    { email: "mellowm678@gmail.com", role: "decorator", name: "Decorator" },
+  ]
+
+  try {
+    const results = []
+
+    for (const target of targets) {
+      const user = await User.findOneAndUpdate(
+        { email: target.email },
+        { role: target.role, name: target.name },
+        {
+          new: true,
+          upsert: true,   // create the doc if it doesn't exist yet
+          setDefaultsOnInsert: true,
+        }
+      )
+      results.push({ email: user.email, role: user.role, action: user.createdAt === user.updatedAt ? "created" : "updated" })
+    }
+
+    res.status(200).json({
+      message: "✅ Roles set successfully!",
+      results,
+    })
+  } catch (error) {
+    res.status(500).json({ message: "❌ Failed to set roles", error: error.message })
+  }
+})
+
 export default router
