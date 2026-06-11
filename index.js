@@ -7,6 +7,8 @@ import serviceRoutes from "./routes/service.routes.js"
 import bookingRoutes from "./routes/booking.routes.js"
 import statsRoutes from "./routes/stats.routes.js"
 import contactRoutes from "./routes/contact.routes.js"
+import authRoutes from "./routes/auth.routes.js"
+import paymentRoutes from "./routes/payment.routes.js"   // ← was missing
 import Service from "./models/Service.model.js"
 
 dotenv.config()
@@ -24,6 +26,8 @@ app.use(cors({
 app.use(express.json())
 
 // ── Routes ────────────────────────────────────────────────────
+app.use("/auth",     authRoutes)
+app.use("/payments", paymentRoutes)   // ← was missing
 app.use("/users",    userRoutes)
 app.use("/services", serviceRoutes)
 app.use("/bookings", bookingRoutes)
