@@ -4,8 +4,12 @@ const userSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            required: true,
+            // FIX: was required:true — Firebase email/password users have no
+            // displayName by default, causing validation failure and the user
+            // doc never being saved, which broke role lookups.
+            required: false,
             trim: true,
+            default: "",
         },
         email: {
             type: String,

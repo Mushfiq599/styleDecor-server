@@ -11,16 +11,21 @@ const isAdmin = (req, res, next) => {
   next()
 }
 
-// POST /users — create or update user (called on login/register)
+// POST /users — create user on first login (called from client on every login)
 router.post("/", async (req, res) => {
   const { email, name, photo } = req.body
   if (!email) return res.status(400).json({ message: "Email is required" })
   try {
     const existing = await User.findOne({ email })
     if (existing) {
+      // User already exists — return as-is, never overwrite their role
       return res.status(200).json({ message: "User already exists", user: existing })
     }
-    const user = new User({ email, name, photo, role: "user" })
+    // FIX: fall back to email prefix if name is missing (Firebase email/password
+    // users have no displayName, so name arrives as undefined/empty and was
+    // failing the required:true validation, preventing the doc from being saved)
+    const safeName = name?.trim() || email.split("@")[0]
+    const user = new User({ email, name: safeName, photo: photo || "", role: "user" })
     await user.save()
     res.status(201).json({ message: "User created", user })
   } catch (error) {
@@ -70,38 +75,34 @@ router.patch("/role/:email", verifyToken, isAdmin, async (req, res) => {
 })
 
 // GET /users/set-roles?secret=YOUR_SEED_SECRET
-// One-time endpoint — upserts vtimely46@gmail.com as admin
-// and mellowm678@gmail.com as decorator
+// Seeds all admin/decorator accounts into MongoDB with correct roles.
+// Safe to call multiple times — uses upsert so it never duplicates.
 router.get("/set-roles", async (req, res) => {
   if (req.query.secret !== process.env.SEED_SECRET) {
     return res.status(401).json({ message: "Unauthorized" })
   }
 
   const targets = [
-    { email: "vtimely46@gmail.com",  role: "admin",     name: "Admin" },
-    { email: "mellowm678@gmail.com", role: "decorator", name: "Decorator" },
+    // Real accounts
+    { email: "vtimely46@gmail.com",        role: "admin",     name: "Admin" },
+    { email: "mellowm678@gmail.com",        role: "decorator", name: "Decorator" },
+    // Demo accounts (Firebase users created by seedUsers.js)
+    { email: "admin@styledecor.com",        role: "admin",     name: "Demo Admin" },
+    { email: "decorator@styledecor.com",    role: "decorator", name: "Demo Decorator" },
+    { email: "user@styledecor.com",         role: "user",      name: "Demo User" },
   ]
 
   try {
     const results = []
-
     for (const target of targets) {
       const user = await User.findOneAndUpdate(
         { email: target.email },
         { role: target.role, name: target.name },
-        {
-          new: true,
-          upsert: true,   // create the doc if it doesn't exist yet
-          setDefaultsOnInsert: true,
-        }
+        { new: true, upsert: true, setDefaultsOnInsert: true }
       )
-      results.push({ email: user.email, role: user.role, action: user.createdAt === user.updatedAt ? "created" : "updated" })
+      results.push({ email: user.email, role: user.role })
     }
-
-    res.status(200).json({
-      message: "✅ Roles set successfully!",
-      results,
-    })
+    res.status(200).json({ message: "✅ Roles set successfully!", results })
   } catch (error) {
     res.status(500).json({ message: "❌ Failed to set roles", error: error.message })
   }
