@@ -28,6 +28,10 @@ const serviceSchema = new mongoose.Schema(
             type: String,
             default: "",
         },
+        images: {
+            type: [String],
+            default: [],
+        },
         createdByEmail: {
             type: String,
             required: true,
